@@ -5,93 +5,148 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Stopwatch = function () {
-    function Stopwatch(display) {
-        _classCallCheck(this, Stopwatch);
+  function Stopwatch(display) {
+    _classCallCheck(this, Stopwatch);
 
-        this.running = false;
-        this.display = display;
-        this.reset();
-        this.print(this.times);
+    this.running = false;
+    this.display = display;
+    this.reset();
+    this.print(this.times);
+  }
+
+  _createClass(Stopwatch, [{
+    key: "reset",
+    value: function reset() {
+      if (!this.times) {
+        this.times = {
+          minutes: 0,
+          seconds: 0,
+          miliseconds: 0
+        };
+        this.print();
+      } else {
+        results.push(this.format(this.times));
+        /* let reversed = results.reverse() */
+        resultOutput.innerHTML = "";
+        results.forEach(function (element, index) {
+          return resultOutput.innerHTML += "<li>" + (index + 1) + " : " + element + "</li>";
+        });
+        document.getElementById("reset-tbl").style.visibility = "visible";
+        this.times = {
+          minutes: 0,
+          seconds: 0,
+          miliseconds: 0
+        };
+        this.print();
+      }
     }
+  }, {
+    key: "print",
+    value: function print() {
+      this.display.innerText = this.format(this.times);
+    }
+  }, {
+    key: "format",
+    value: function format(times) {
+      return pad0(times.minutes) + ":" + pad0(times.seconds) + ":" + pad0(Math.floor(times.miliseconds));
+    }
+    /* start() {
+      if (!this.running) {
+          this.running = true;
+          this.watch = setInterval(() => this.step(), 10);
+      }
+    } */
 
-    _createClass(Stopwatch, [{
-        key: "reset",
-        value: function reset() {
-            this.times = {
-                minutes: 0,
-                seconds: 0,
-                miliseconds: 0
-            };
-        }
-    }, {
-        key: "print",
-        value: function print() {
-            this.display.innerText = this.format(this.times);
-        }
-    }, {
-        key: "format",
-        value: function format(times) {
-            return pad0(times.minutes) + ":" + pad0(times.seconds) + ":" + pad0(Math.floor(times.miliseconds));
-        }
-    }, {
-        key: "start",
-        value: function start() {
-            var _this = this;
+  }, {
+    key: "step",
+    value: function step() {
+      if (!this.running) return;
+      this.calculate();
+      this.print();
+    }
+  }, {
+    key: "calculate",
+    value: function calculate() {
+      this.times.miliseconds += 1;
+      if (this.times.miliseconds >= 100) {
+        this.times.seconds += 1;
+        this.times.miliseconds = 0;
+      }
+      if (this.times.seconds >= 60) {
+        this.times.minutes += 1;
+        this.times.seconds = 0;
+      }
+    }
+    /* stop() {
+      this.running = false;
+      clearInterval(this.watch);
+    } */
+    // toggle
 
-            if (!this.running) {
-                this.running = true;
-                this.watch = setInterval(function () {
-                    return _this.step();
-                }, 10);
-            }
-        }
-    }, {
-        key: "step",
-        value: function step() {
-            if (!this.running) return;
-            this.calculate();
-            this.print();
-        }
-    }, {
-        key: "calculate",
-        value: function calculate() {
-            this.times.miliseconds += 1;
-            if (this.times.miliseconds >= 100) {
-                this.times.seconds += 1;
-                this.times.miliseconds = 0;
-            }
-            if (this.times.seconds >= 60) {
-                this.times.minutes += 1;
-                this.times.seconds = 0;
-            }
-        }
-    }, {
-        key: "stop",
-        value: function stop() {
-            this.running = false;
-            clearInterval(this.watch);
-        }
-    }]);
+  }, {
+    key: "toggle",
+    value: function toggle() {
+      var _this = this;
 
-    return Stopwatch;
+      var element = document.getElementById("toggle");
+      if (!this.running) {
+        this.running = true;
+        this.watch = setInterval(function () {
+          return _this.step();
+        }, 10);
+        element.innerHTML = "Stop";
+        element.classList.add("red");
+        element.classList.remove("green");
+      } else {
+        resetButton = document.getElementById("reset").disabled = true;
+        this.running = false;
+        clearInterval(this.watch);
+        element.innerHTML = "Start";
+        element.classList.add("green");
+        element.classList.remove("red");
+      }
+    }
+  }]);
+
+  return Stopwatch;
 }();
 
+function resetTable() {
+  results.length = 0;
+  resultOutput.innerHTML = "Wyniki";
+}
 function pad0(value) {
-    var result = value.toString();
-    if (result.length < 2) {
-        result = '0' + result;
-    }
-    return result;
+  var result = value.toString();
+  if (result.length < 2) {
+    result = "0" + result;
+  }
+  return result;
 }
 
 var stopwatch = new Stopwatch(document.querySelector(".stopwatch"));
+var resultOutput = document.getElementById("results");
+var results = [];
 
-var startButton = document.getElementById("start");
-startButton.addEventListener("click", function () {
-    return stopwatch.start();
+/* let startButton = document.getElementById("start");
+startButton.addEventListener("click", () => stopwatch.start());
+
+let stopButton = document.getElementById("stop");
+stopButton.addEventListener("click", () => stopwatch.stop()); */
+
+var toggleButton = document.getElementById("toggle");
+toggleButton.addEventListener("click", function () {
+  stopwatch.toggle();
+  event.stopPropagation();
 });
 
-var stopButton = document.getElementById("stop");
-stopButton.addEventListener("click", function () {
-    return stopwatch.stop();
+var resetButton = document.getElementById("reset");
+resetButton.addEventListener("click", function () {
+  stopwatch.reset();
+  event.stopPropagation();
+});
+
+var resetTableButton = document.getElementById("reset-tbl");
+resetTableButton.addEventListener("click", function () {
+  resetTable();
+  event.stopPropagation();
 });
