@@ -26,12 +26,10 @@ var Stopwatch = function () {
         this.print();
       } else {
         results.push(this.format(this.times));
-        /* let reversed = results.reverse() */
         resultOutput.innerHTML = "";
         results.forEach(function (element, index) {
           return resultOutput.innerHTML += "<li>" + (index + 1) + " : " + element + "</li>";
         });
-        document.getElementById("reset-tbl").style.visibility = "visible";
         this.times = {
           minutes: 0,
           seconds: 0,
@@ -50,13 +48,6 @@ var Stopwatch = function () {
     value: function format(times) {
       return pad0(times.minutes) + ":" + pad0(times.seconds) + ":" + pad0(Math.floor(times.miliseconds));
     }
-    /* start() {
-      if (!this.running) {
-          this.running = true;
-          this.watch = setInterval(() => this.step(), 10);
-      }
-    } */
-
   }, {
     key: "step",
     value: function step() {
@@ -77,12 +68,6 @@ var Stopwatch = function () {
         this.times.seconds = 0;
       }
     }
-    /* stop() {
-      this.running = false;
-      clearInterval(this.watch);
-    } */
-    // toggle
-
   }, {
     key: "toggle",
     value: function toggle() {
@@ -97,8 +82,8 @@ var Stopwatch = function () {
         element.innerHTML = "Stop";
         element.classList.add("red");
         element.classList.remove("green");
+        resetButton.disabled = true;
       } else {
-        resetButton = document.getElementById("reset").disabled = true;
         this.running = false;
         clearInterval(this.watch);
         element.innerHTML = "Start";
@@ -111,27 +96,22 @@ var Stopwatch = function () {
   return Stopwatch;
 }();
 
-function resetTable() {
+var resetTable = function resetTable() {
   results.length = 0;
   resultOutput.innerHTML = "Wyniki";
-}
-function pad0(value) {
+};
+
+var pad0 = function pad0(value) {
   var result = value.toString();
   if (result.length < 2) {
     result = "0" + result;
   }
   return result;
-}
+};
 
 var stopwatch = new Stopwatch(document.querySelector(".stopwatch"));
 var resultOutput = document.getElementById("results");
 var results = [];
-
-/* let startButton = document.getElementById("start");
-startButton.addEventListener("click", () => stopwatch.start());
-
-let stopButton = document.getElementById("stop");
-stopButton.addEventListener("click", () => stopwatch.stop()); */
 
 var toggleButton = document.getElementById("toggle");
 toggleButton.addEventListener("click", function () {
