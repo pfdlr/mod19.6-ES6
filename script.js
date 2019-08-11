@@ -16,10 +16,9 @@ class Stopwatch {
       this.print();
     } else {
       results.push(this.format(this.times));
-      /* let reversed = results.reverse() */
       resultOutput.innerHTML = "";
       results.forEach((element, index) => (resultOutput.innerHTML += `<li>${index + 1} : ${element}</li>`));
-      document.getElementById("reset-tbl").style.visibility = "visible"
+      document.getElementById("reset-tbl").style.visibility = "visible";
       this.times = {
         minutes: 0,
         seconds: 0,
@@ -28,23 +27,21 @@ class Stopwatch {
       this.print();
     }
   }
+
   print() {
     this.display.innerText = this.format(this.times);
   }
+
   format(times) {
     return `${pad0(times.minutes)}:${pad0(times.seconds)}:${pad0(Math.floor(times.miliseconds))}`;
   }
-  /* start() {
-    if (!this.running) {
-        this.running = true;
-        this.watch = setInterval(() => this.step(), 10);
-    }
-} */
+
   step() {
     if (!this.running) return;
     this.calculate();
     this.print();
   }
+
   calculate() {
     this.times.miliseconds += 1;
     if (this.times.miliseconds >= 100) {
@@ -56,11 +53,7 @@ class Stopwatch {
       this.times.seconds = 0;
     }
   }
-  /* stop() {
-    this.running = false;
-    clearInterval(this.watch);
-} */
-  // toggle
+
   toggle() {
     var element = document.getElementById("toggle");
     if (!this.running) {
@@ -79,10 +72,12 @@ class Stopwatch {
     }
   }
 }
+
 function resetTable() {
   results.length = 0;
   resultOutput.innerHTML = "Wyniki";
 }
+
 function pad0(value) {
   let result = value.toString();
   if (result.length < 2) {
@@ -94,12 +89,6 @@ function pad0(value) {
 const stopwatch = new Stopwatch(document.querySelector(".stopwatch"));
 const resultOutput = document.getElementById("results");
 const results = [];
-
-/* let startButton = document.getElementById("start");
-startButton.addEventListener("click", () => stopwatch.start());
-
-let stopButton = document.getElementById("stop");
-stopButton.addEventListener("click", () => stopwatch.stop()); */
 
 let toggleButton = document.getElementById("toggle");
 toggleButton.addEventListener("click", () => {
