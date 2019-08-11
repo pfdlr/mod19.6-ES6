@@ -18,7 +18,6 @@ class Stopwatch {
       results.push(this.format(this.times));
       resultOutput.innerHTML = "";
       results.forEach((element, index) => (resultOutput.innerHTML += `<li>${index + 1} : ${element}</li>`));
-      document.getElementById("reset-tbl").style.visibility = "visible";
       this.times = {
         minutes: 0,
         seconds: 0,
@@ -55,7 +54,7 @@ class Stopwatch {
   }
 
   toggle() {
-    var element = document.getElementById("toggle");
+    const element = document.getElementById("toggle");
     if (!this.running) {
       this.running = true;
       this.watch = setInterval(() => this.step(), 10);
@@ -63,7 +62,6 @@ class Stopwatch {
       element.classList.add("red");
       element.classList.remove("green");
     } else {
-      resetButton = document.getElementById("reset").disabled = true;
       this.running = false;
       clearInterval(this.watch);
       element.innerHTML = "Start";
@@ -73,12 +71,12 @@ class Stopwatch {
   }
 }
 
-function resetTable() {
+const resetTable = () => {
   results.length = 0;
   resultOutput.innerHTML = "Wyniki";
 }
 
-function pad0(value) {
+const pad0 = (value) => {
   let result = value.toString();
   if (result.length < 2) {
     result = "0" + result;
@@ -90,19 +88,19 @@ const stopwatch = new Stopwatch(document.querySelector(".stopwatch"));
 const resultOutput = document.getElementById("results");
 const results = [];
 
-let toggleButton = document.getElementById("toggle");
+const toggleButton = document.getElementById("toggle");
 toggleButton.addEventListener("click", () => {
   stopwatch.toggle();
   event.stopPropagation();
 });
 
-let resetButton = document.getElementById("reset");
+const resetButton = document.getElementById("reset");
 resetButton.addEventListener("click", () => {
   stopwatch.reset();
   event.stopPropagation();
 });
 
-let resetTableButton = document.getElementById("reset-tbl");
+const resetTableButton = document.getElementById("reset-tbl");
 resetTableButton.addEventListener("click", () => {
   resetTable();
   event.stopPropagation();
