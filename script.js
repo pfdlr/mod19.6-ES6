@@ -61,12 +61,14 @@ class Stopwatch {
       element.innerHTML = "Stop";
       element.classList.add("red");
       element.classList.remove("green");
+      resetButton.disabled = true; 
     } else {
       this.running = false;
       clearInterval(this.watch);
       element.innerHTML = "Start";
       element.classList.add("green");
       element.classList.remove("red");
+      resetButton.disabled = true; 
     }
   }
 }
@@ -95,6 +97,7 @@ toggleButton.addEventListener("click", () => {
 });
 
 const resetButton = document.getElementById("reset");
+resetButton.disabled = true; 
 resetButton.addEventListener("click", () => {
   stopwatch.reset();
   event.stopPropagation();

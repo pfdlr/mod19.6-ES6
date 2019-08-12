@@ -89,6 +89,7 @@ var Stopwatch = function () {
         element.innerHTML = "Start";
         element.classList.add("green");
         element.classList.remove("red");
+        resetButton.disabled = true;
       }
     }
   }]);
@@ -120,6 +121,7 @@ toggleButton.addEventListener("click", function () {
 });
 
 var resetButton = document.getElementById("reset");
+resetButton.disabled = true;
 resetButton.addEventListener("click", function () {
   stopwatch.reset();
   event.stopPropagation();
