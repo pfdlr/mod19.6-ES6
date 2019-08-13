@@ -25,7 +25,7 @@ class Stopwatch extends React.Component {
       });
       element.classList.add("red");
       element.classList.remove("green");
-      this.watch = setInterval(this.calculate, 10);
+      this.watch = setInterval(this.step, 10);
     } else {
       this.setState({
         running: !this.state.running
@@ -52,9 +52,9 @@ class Stopwatch extends React.Component {
     }
     this.setState({
       times: {
-        minutes: this.state.minutes,
-        seconds: this.state.seconds,
-        miliseconds: this.state.miliseconds
+        minutes: this.state.times.minutes,
+        seconds: this.state.times.seconds,
+        miliseconds: this.state.times.miliseconds
       }
     })
   }
