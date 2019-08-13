@@ -35,8 +35,7 @@ function (_React$Component) {
         seconds: 0,
         miliseconds: 0
       },
-      running: false,
-      results: []
+      running: false
     };
     _this.handleClickSS = _this.handleClickSS.bind(_assertThisInitialized(_this));
     _this.step = _this.step.bind(_assertThisInitialized(_this));
@@ -51,14 +50,14 @@ function (_React$Component) {
 
       if (!this.state.running) {
         this.setState({
-          running: !this.state.running
+          running: true
         });
         element.classList.add("red");
         element.classList.remove("green");
         this.watch = setInterval(this.step, 10);
       } else {
         this.setState({
-          running: !this.state.running
+          running: false
         });
         element.classList.add("green");
         element.classList.remove("red");
@@ -94,59 +93,16 @@ function (_React$Component) {
         }
       });
     }
-    /* 
-    reset() {
-      if (!this.state.times) {
-        this.setState = {
-          times: {
-            minutes: 0,
-            seconds: 0,
-            miliseconds: 0
-          }
-        };
-      } else {
-        this.setState = {
-          results: results + this.state.times
-        };
-        this.times = {
-          minutes: 0,
-          seconds: 0,
-          miliseconds: 0
-        };
-        this.print();
-      }
-    }
-    resetTable() {
-      results.length = 0;
-      resultOutput.innerHTML = "Wyniki";
-    } */
-
   }, {
     key: "render",
     value: function render() {
-      return React.createElement(React.Fragment, null, React.createElement("nav", {
-        className: "controls"
-      }, React.createElement("a", {
+      return React.createElement(React.Fragment, null, React.createElement("button", {
         onClick: this.handleClickSS,
         className: "button  green",
         id: "toggle"
-      }, this.state.running ? "Stop" : "Start")), React.createElement(DisplayCounter, {
+      }, this.state.running ? "Stop" : "Start"), React.createElement(DisplayCounter, {
         show: format(this.state.times)
-      }), React.createElement("div", {
-        className: "reset"
-      }, React.createElement("a", {
-        href: "#",
-        className: "button red",
-        id: "reset"
-      }, "Reset")), React.createElement(ResultTable, {
-        results: this.state.results
-      }), React.createElement("div", {
-        className: "reset"
-      }, React.createElement("a", {
-        href: "#",
-        "class": "button red",
-        id: "reset-tbl"
-      }, "Reset table")));
+      }));
     }
   }]);
 
@@ -157,15 +113,6 @@ var DisplayCounter = function DisplayCounter(props) {
   return React.createElement("div", {
     className: "stopwatch"
   }, props.show);
-};
-
-var ResultTable = function ResultTable(props) {
-  return React.createElement("ul", {
-    className: "results",
-    id: "results"
-  }, props.results.map(function (result, index) {
-    return React.createElement("li", null, index + 1, " : ", result);
-  }));
 };
 
 var format = function format(times) {

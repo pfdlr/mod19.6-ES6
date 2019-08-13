@@ -1,16 +1,11 @@
 body {
     box-sizing: border-box;
     background-color: rgb(35, 51, 51);
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
 }
 
-nav {
-  text-align: center;
-  margin: auto;
-  display: flex;
-  justify-content: center;
-  padding: 10px;
-}
-a {
+button {
   text-align: center;
   margin: 20px 10px;
   text-transform: uppercase;
@@ -24,9 +19,10 @@ a {
   text-decoration: none;
   color: black;
   border: 1px solid black;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
   
 }
-a:active {
+button:active {
   background: linear-gradient(to bottom, rgba(229, 229, 229, 1) 0%, rgba(255, 255, 255, 1) 100%);
 }
 #toggle {
@@ -70,15 +66,7 @@ a:active {
     line-height: 45px;
 }
 
-.reset {
-    text-align: center;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-    
-}
-.reset a {
-   padding: 0 10px;
-}
-.results {
+.results-tbl {
     margin: auto;
     background-color: aliceblue;
     width: 160px;
