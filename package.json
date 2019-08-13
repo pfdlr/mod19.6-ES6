@@ -17,13 +17,17 @@
   },
   "homepage": "https://github.com/pfdlr/mod19-ES6#readme",
   "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.4.0",
+    "@babel/plugin-proposal-class-properties": "^7.4.0",
+    "@babel/preset-env": "^7.4.2",
+    "@babel/preset-react": "^7.0.0",
     "babel-cli": "^6.26.0",
-    "babel-preset-latest": "^6.24.1",
-    "eslint": "^6.1.0"
+    "babel-loader": "^8.0.5",
+    "babel-preset-latest": "^6.24.1"
   },
-  "directories": {
-    "test": "test"
-  },
-  "dependencies": {},
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "babel-preset-react": "^6.24.1"
+  }
 }

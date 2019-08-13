@@ -1,107 +1,144 @@
-class Stopwatch {
-  constructor(display) {
-    this.running = false;
-    this.display = display;
-    this.reset();
-    this.print(this.times);
+class Stopwatch extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      times: {
+        minutes: 0,
+        seconds: 0,
+        miliseconds: 0
+      },
+      running: false,
+      results: []
+    };
+    this.handleClickSS = this.handleClickSS.bind(this);
+    this.step = this.step.bind(this);
+    this.calculate = this.calculate.bind(this);
   }
 
-  reset() {
-    if (!this.times) {
-      this.times = {
-        minutes: 0,
-        seconds: 0,
-        miliseconds: 0
-      };
-      this.print();
+  
+  handleClickSS() {
+    const element = document.getElementById("toggle");
+    if (!this.state.running) {
+      this.setState({
+        running: !this.state.running
+      });
+      element.classList.add("red");
+      element.classList.remove("green");
+      this.watch = setInterval(this.calculate, 10);
     } else {
-      results.push(this.format(this.times));
-      resultOutput.innerHTML = "";
-      results.forEach((element, index) => (resultOutput.innerHTML += `<li>${index + 1} : ${element}</li>`));
-      this.times = {
-        minutes: 0,
-        seconds: 0,
-        miliseconds: 0
-      };
-      this.print();
+      this.setState({
+        running: !this.state.running
+      });
+      element.classList.add("green");
+      element.classList.remove("red");
+      clearInterval(this.watch);
     }
   }
-
-  print() {
-    this.display.innerText = this.format(this.times);
-  }
-
-  format(times) {
-    return `${pad0(times.minutes)}:${pad0(times.seconds)}:${pad0(Math.floor(times.miliseconds))}`;
-  }
-
   step() {
-    if (!this.running) return;
+    if (!this.state.running) return;
     this.calculate();
-    this.print();
   }
 
   calculate() {
-    this.times.miliseconds += 1;
-    if (this.times.miliseconds >= 100) {
-      this.times.seconds += 1;
-      this.times.miliseconds = 0;
+    this.state.times.miliseconds += 1;
+    if (this.state.times.miliseconds >= 100) {
+      this.state.times.seconds += 1;
+      this.state.times.miliseconds = 0;
     }
-    if (this.times.seconds >= 60) {
-      this.times.minutes += 1;
-      this.times.seconds = 0;
+    if (this.state.times.seconds >= 60) {
+      this.state.times.minutes += 1;
+      this.state.times.seconds = 0;
     }
+    this.setState({
+      times: {
+        minutes: this.state.minutes,
+        seconds: this.state.seconds,
+        miliseconds: this.state.miliseconds
+      }
+    })
   }
-
-  toggle() {
-    const element = document.getElementById("toggle");
-    if (!this.running) {
-      this.running = true;
-      this.watch = setInterval(() => this.step(), 10);
-      element.innerHTML = "Stop";
-      element.classList.add("red");
-      element.classList.remove("green");
+      
+  
+  /* 
+  reset() {
+    if (!this.state.times) {
+      this.setState = {
+        times: {
+          minutes: 0,
+          seconds: 0,
+          miliseconds: 0
+        }
+      };
     } else {
-      this.running = false;
-      clearInterval(this.watch);
-      element.innerHTML = "Start";
-      element.classList.add("green");
-      element.classList.remove("red");
+      this.setState = {
+        results: results + this.state.times
+      };
+      this.times = {
+        minutes: 0,
+        seconds: 0,
+        miliseconds: 0
+      };
+      this.print();
     }
   }
-}
+  resetTable() {
+    results.length = 0;
+    resultOutput.innerHTML = "Wyniki";
+  } */
 
-const resetTable = () => {
-  results.length = 0;
-  resultOutput.innerHTML = "Wyniki";
-}
+  render() {
+    return (
+      <React.Fragment>
+        <nav className="controls">
+          <a onClick={this.handleClickSS} className="button  green" id="toggle">
+            {this.state.running ? "Stop" : "Start"}
+          </a>
+        </nav>
+        <DisplayCounter show={format(this.state.times)} />
+        <div className="reset">
+          <a href="#" className="button red" id="reset">
+            Reset
+          </a>
+        </div>
 
-const pad0 = (value) => {
-  let result = value.toString();
-  if (result.length < 2) {
-    result = "0" + result;
+        <ResultTable results={this.state.results} />
+        <div className="reset">
+          <a href="#" class="button red" id="reset-tbl">
+            Reset table
+          </a>
+        </div>
+      </React.Fragment>
+    );
   }
-  return result;
 }
 
-const stopwatch = new Stopwatch(document.querySelector(".stopwatch"));
-const resultOutput = document.getElementById("results");
-const results = [];
+const DisplayCounter = props => {
+  return <div className="stopwatch">{props.show}</div>;
+};
 
-const toggleButton = document.getElementById("toggle");
-toggleButton.addEventListener("click", () => {
-  stopwatch.toggle();
-  event.stopPropagation();
-});
+const ResultTable = props => {
+  return (
+    <ul className="results" id="results">
+      {props.results.map((result, index) => (
+        <li>
+          {index + 1} : {result}
+        </li>
+      ))}
+    </ul>
+  );
+};
 
-const resetButton = document.getElementById("reset");
-resetButton.addEventListener("click", () => {
-  stopwatch.reset();
-  event.stopPropagation();
-});
+const format = (times) => {
+  return `${pad0(times.minutes)}:${pad0(times.seconds)}:${pad0(Math.floor(times.miliseconds))}`;
+};
 
-const resetTableButton = document.getElementById("reset-tbl");
-resetTableButton.addEventListener("click", () => {
-  resetTable();
-  event.stopPropagation();
-});
+const pad0 = value => {
+    let result = value.toString();
+    if (result.length < 2) {
+      result = "0" + result;
+    }
+    return result;
+  };
+
+ReactDOM.render(<Stopwatch />, document.getElementById("root"));
